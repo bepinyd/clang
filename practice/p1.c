@@ -5,11 +5,6 @@
 #include <stdint.h>
 
 int main() {
-    int *arr;
-    int size = 5;
-    arr = (int *)malloc(sizeof(int) * size);
-    printf("%p\n", (void *)arr); // Print memory address of arr
-    int b = sizeof(uint8_t);
-    printf("%d\n", b); // Print size of uint8_t
+    printf("%04d ", 0);
     return 0;
 }
