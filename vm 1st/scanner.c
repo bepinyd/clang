@@ -2,7 +2,6 @@
 #include <string.h>
 #include "common.h"
 #include "scanner.h"
-#include "compiler.h"
 typedef struct {
 const char* start;
 const char* current;
@@ -14,6 +13,7 @@ scanner.start = source;
 scanner.current = source;
 scanner.line = 1;
 }
+
 
 static bool isAlpha(char c) {
     return (c >= 'a' && c <= 'z') ||
@@ -58,6 +58,7 @@ token.start = message;
 token.length = (int)strlen(message);
 token.line = scanner.line;
 return token;
+
 }
 static void skipWhitespace() {
 for (;;) {
