@@ -14,6 +14,7 @@ scanner.start = source;
 scanner.current = source;
 scanner.line = 1;
 }
+
 static bool isAlpha(char c) {
     return (c >= 'a' && c <= 'z') ||
 (c >= 'A' && c <= 'Z') ||
@@ -29,6 +30,7 @@ static char advance() {
     scanner.current++;
 return scanner.current[-1];
 }
+
 static char peek() {
 return *scanner.current;
 }
