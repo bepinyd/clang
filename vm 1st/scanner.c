@@ -2,11 +2,13 @@
 #include <string.h>
 #include "common.h"
 #include "scanner.h"
+
 typedef struct {
 const char* start;
 const char* current;
 int line;
 } Scanner;
+
 Scanner scanner;
 void initScanner(const char* source) {
 scanner.start = source;
@@ -20,6 +22,7 @@ static bool isAlpha(char c) {
 (c >= 'A' && c <= 'Z') ||
 c == '_';
 }
+
 static bool isDigit(char c) {
 return c >= '0' && c <= '9';
 }
@@ -27,6 +30,7 @@ static bool isAtEnd() {
 return *scanner.current == '\0';
 }
 static char advance() {
+    
     scanner.current++;
 return scanner.current[-1];
 }
@@ -48,6 +52,7 @@ static Token makeToken(TokenType type) {
 Token token;
 token.type = type;
 token.start = scanner.start;
+token.length = (int)(scanner.current - scanner.start);
 token.line = scanner.line;
 return token;
 }
@@ -69,6 +74,10 @@ case '\r':
 case '\t':
 advance();
 break;
+ case '\n':
+    advance();
+    scanner.line++;
+    break;
 case '/':
 if (peekNext() == '/') {
 // A comment goes until the end of the line.
@@ -121,8 +130,12 @@ case 'w': return checkKeyword(1, 4, "hile", TOKEN_WHILE);
 }
     return TOKEN_IDENTIFIER;
 }
+static Token identifier() {
+while (isAlpha(peek()) || isDigit(peek())) advance();
+return makeToken(identifierType());
+}
 static Token number() {
-    while (isDigit(peek())) advance();
+    while (isDigit(peek()))advance();
     if (peek() == '.' && isDigit(peekNext())) {
 // Consume the ".".
 advance();
@@ -130,10 +143,7 @@ while (isDigit(peek())) advance();
 }
 return makeToken(TOKEN_NUMBER);
 }
-static Token identifier() {
-while (isAlpha(peek()) || isDigit(peek())) advance();
-return makeToken(identifierType());
-}
+
 static Token string() {
 while (peek() != '"' && !isAtEnd()) {
 if (peek() == '\n') scanner.line++;
