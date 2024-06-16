@@ -15,6 +15,13 @@ object->next = vm.objects;
 vm.objects = object;
 return object;
 }
+ObjFunction* newFunction() {
+ObjFunction* function = ALLOCATE_OBJ(ObjFunction, OBJ_FUNCTION);
+function->arity = 0;
+function->name = NULL;
+initChunk(&function->chunk);
+return function;
+}
 static ObjString* allocateString(char* chars, int length,
 uint32_t hash){
 ObjString* string = ALLOCATE_OBJ(ObjString, OBJ_STRING);
